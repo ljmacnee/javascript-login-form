@@ -14,8 +14,30 @@ let resetMessage = () => {
   document.getElementById("success-message").hidden = true;
   document.getElementById("error-message").hidden = true;
 };
+let showPassword = () => {
+  let passwordInput = document.getElementById("password");
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+  } else {
+    passwordInput.type = "password";
+  }
+};
 
-addEventListener("submit", (event) => {
+
+const showButton = document.getElementById("show");
+showButton.addEventListener("click", (event) => {
+  event.preventDefault();
+  let passwordInput = document.getElementById("password");
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    showButton.textContent = "Hide Password";
+  } else {
+    passwordInput.type = "password";
+    showButton.textContent = "Show Password";
+  }
+});
+
+document.getElementById("submitButton").addEventListener("click", (event) => {
   event.preventDefault();
   resetMessage();
 
@@ -24,10 +46,17 @@ addEventListener("submit", (event) => {
 
   console.log(`email submitted: ${email}`);
   console.log(`password submitted: ${password}`);
-  /*
-    TODO:
-    1. Check if the email and password are valid (using the usersTable)
-    2. If they are, call renderSuccess()
-    3. If they are not, call renderError()
-   */
+
+  var valid = false;
+  for (let i = 0; i < usersTable.length; i++) {
+    const user = usersTable[i];
+    if (user.username == email) {
+      valid = true;
+    }
+  }
+  if (valid) {
+    renderSuccess();
+  } else {
+    renderError();
+  }
 });
